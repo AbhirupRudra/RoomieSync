@@ -1,8 +1,8 @@
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 import { UserProfile } from "../types";
 
-const ai = new GoogleGenerativeAI(process.env.VITE_GEMINI_API_KEY);
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
 
 export const getCompatibilityInsight = async (userA: UserProfile, userB: UserProfile): Promise<string> => {
   if (!process.env.API_KEY) return "AI insights unavailable.";
