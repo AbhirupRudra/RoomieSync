@@ -304,7 +304,7 @@ const App: React.FC = () => {
                   <div className="md:col-span-2 space-y-3">
                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Your Gender</p>
                     <div className="grid grid-cols-3 gap-3">
-                      {(['male', 'female', 'non-binary'] as Gender[]).map(g => (
+                      {(['male', 'female'] as Gender[]).map(g => (
                         <button 
                           key={g}
                           onClick={() => setUserData({...userData, gender: g})}
