@@ -19,6 +19,19 @@ import {
 import LifestyleSlider from './components/LifestyleSlider';
 import MatchCard from './components/MatchCard';
 
+const OCCUPATION_OPTIONS = [
+  "Student",
+  "Full-time Professional",
+  "Freelancer / Self-employed",
+  "Healthcare / Medical",
+  "Education / Teacher",
+  "Arts / Creative / Design",
+  "Tech / Engineering",
+  "Service Industry / Retail",
+  "Gig Worker",
+  "Other"
+];
+
 const App: React.FC = () => {
   const [step, setStep] = useState<'auth' | 'welcome' | 'questionnaire' | 'dashboard'>('auth');
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
@@ -182,7 +195,7 @@ const App: React.FC = () => {
   };
 
   const handleComplete = async () => {
-    if (!userData.name || !userData.occupation || !userData.age) {
+    if (!userData.name || !userData.occupation || !userData.age || !userData.gender) {
       setAppError("Please fill in all details.");
       return;
     }
@@ -286,7 +299,56 @@ const App: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <input type="text" value={userData.name} onChange={e => setUserData({...userData, name: e.target.value})} className="w-full p-5 bg-slate-50 rounded-[24px] outline-none focus:bg-white border border-transparent focus:border-indigo-600 transition-all" placeholder="Your Name" />
                   <input type="number" value={userData.age} onChange={e => setUserData({...userData, age: parseInt(e.target.value) || 18})} className="w-full p-5 bg-slate-50 rounded-[24px] outline-none focus:bg-white border border-transparent focus:border-indigo-600 transition-all" placeholder="Age" />
-                  <input type="text" className="md:col-span-2 w-full p-5 bg-slate-50 rounded-[24px] outline-none focus:bg-white border border-transparent focus:border-indigo-600 transition-all" value={userData.occupation} onChange={e => setUserData({...userData, occupation: e.target.value})} placeholder="Occupation" />
+                  
+                  {/* Gender Buttons */}
+                  <div className="md:col-span-2 space-y-3">
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Your Gender</p>
+                    <div className="grid grid-cols-3 gap-3">
+                      {(['male', 'female', 'non-binary'] as Gender[]).map(g => (
+                        <button 
+                          key={g}
+                          onClick={() => setUserData({...userData, gender: g})}
+                          className={`py-4 rounded-[20px] font-bold text-sm transition-all border ${userData.gender === g ? 'bg-indigo-600 text-white border-indigo-600 shadow-md' : 'bg-slate-50 text-slate-500 border-transparent hover:border-slate-200'}`}
+                        >
+                          {g.charAt(0).toUpperCase() + g.slice(1)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Roommate Preference Toggle */}
+                  <div className="md:col-span-2 space-y-3">
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Roommate Gender Preference</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button 
+                        onClick={() => setUserData({...userData, allowOppositeGender: false})}
+                        className={`py-4 rounded-[20px] font-bold text-sm transition-all border ${!userData.allowOppositeGender ? 'bg-slate-800 text-white border-slate-800' : 'bg-slate-50 text-slate-500 border-transparent hover:border-slate-200'}`}
+                      >
+                        Same Gender Only
+                      </button>
+                      <button 
+                        onClick={() => setUserData({...userData, allowOppositeGender: true})}
+                        className={`py-4 rounded-[20px] font-bold text-sm transition-all border ${userData.allowOppositeGender ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-slate-50 text-slate-500 border-transparent hover:border-slate-200'}`}
+                      >
+                        Any Gender Open
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Occupation Select Field */}
+                  <div className="md:col-span-2 space-y-3">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Occupation</p>
+                    <select 
+                      value={userData.occupation} 
+                      onChange={e => setUserData({...userData, occupation: e.target.value})} 
+                      className="w-full p-5 bg-slate-50 rounded-[24px] outline-none focus:bg-white border border-transparent focus:border-indigo-600 transition-all appearance-none cursor-pointer"
+                    >
+                      <option value="" disabled>Select your occupation</option>
+                      {OCCUPATION_OPTIONS.map(opt => (
+                        <option key={opt} value={opt}>{opt}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
                 <textarea value={userData.bio} onChange={e => setUserData({...userData, bio: e.target.value})} className="w-full p-6 bg-slate-50 rounded-[32px] h-32 outline-none focus:bg-white border border-transparent focus:border-indigo-600 transition-all text-lg resize-none" placeholder="Tell us a little about yourself..." />
               </div>
