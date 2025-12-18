@@ -1,5 +1,5 @@
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+// Standard npm imports for Firebase v9+ (Modular SDK)
+import { initializeApp } from "firebase/app";
 import { 
   getFirestore, 
   collection, 
@@ -10,8 +10,16 @@ import {
   updateDoc, 
   arrayUnion, 
   arrayRemove 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+} from "firebase/firestore";
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+} from "firebase/auth";
+
+// Your existing type imports
 import { UserProfile, RequestStatus } from "../types";
 
 const firebaseConfig = {
@@ -23,9 +31,10 @@ const firebaseConfig = {
   appId: "1:765277979756:web:9237e386faf727b1620449"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-const db = getFirestore(app);
+export const db = getFirestore(app); // Added 'export' so other services can use it
 const USERS_COLLECTION = "users";
 
 export const saveUserProfile = async (profile: UserProfile) => {
